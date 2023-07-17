@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe '/', type: :feature do
   before(:each) do
-    @user1 = User.create!(name: "Sarah", email: "Sarah@gmail.com")
-    @user2 = User.create!(name: "Jimmy", email: "Jimmy@gmail.com")
-    @user3 = User.create!(name: "Alex", email: "Alex@gmail.com")
-    @user4 = User.create!(name: "John", email: "John@gmail.com")
+    @user1 = User.create!(name: "Sarah", email: "Sarah@gmail.com", password_digest: 'password1')
+    @user2 = User.create!(name: "Jimmy", email: "Jimmy@gmail.com", password_digest: 'password1')
+    @user3 = User.create!(name: "Alex", email: "Alex@gmail.com", password_digest: 'password1')
+    @user4 = User.create!(name: "John", email: "John@gmail.com", password_digest: 'password1')
     visit root_path
   end
   describe "User visits root path" do

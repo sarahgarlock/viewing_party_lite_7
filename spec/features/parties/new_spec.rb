@@ -30,9 +30,9 @@ require 'rails_helper'
 
 RSpec.describe 'New Viewing Page', type: :feature do
   before(:each) do
-    @user1 = User.create!(name: 'Sarah', email: 'sarah@gmail.com')
-    @user2 = User.create!(name: 'James', email: 'James@gmail.com')
-    @user3 = User.create!(name: 'Jimi', email: 'Jimi@gmail.com')
+    @user1 = User.create!(name: 'Sarah', email: 'sarah@gmail.com', password_digest: 'password1')
+    @user2 = User.create!(name: 'James', email: 'James@gmail.com', password_digest: 'password1')
+    @user3 = User.create!(name: 'Jimi', email: 'Jimi@gmail.com', password_digest: 'password1')
 
     movies = SearchFacade.new.movies
     @movie = movies.first
