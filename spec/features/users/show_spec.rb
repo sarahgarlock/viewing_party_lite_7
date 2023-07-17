@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Users Show Page', type: :feature do
   before(:each) do
-    @user1 = User.create!(name: 'Sarah', email: 'Sarah@gmail.com')
-    @user2 = User.create!(name: 'Jimmy', email: 'Jimmy@gmail.com')
+    @user1 = User.create!(name: 'Sarah', email: 'Sarah@gmail.com', password_digest: 'password1')
+    @user2 = User.create!(name: 'Jimmy', email: 'Jimmy@gmail.com', password_digest: 'password1')
 
     visit user_path(@user1)
   end
