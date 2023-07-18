@@ -18,7 +18,7 @@ RSpec.describe '/', type: :feature do
       expect(page).to have_button("Create New User")
     end
 
-    it "should display existing users with links to the users dashboard if signed in" do
+    it "should display existing users emails if signed in" do
       user = User.create!(name: "Ben Dover", 
                           email: 'bendover@gmail.com',
                           password: 'password')
@@ -33,11 +33,11 @@ RSpec.describe '/', type: :feature do
       visit root_path
       
       within("#existing-users") do
-        expect(page).to have_content("#{@user1.name}")
-        expect(page).to have_content("#{@user2.name}")
-        expect(page).to have_content("#{@user3.name}")
-        expect(page).to have_content("#{@user4.name}")
-        expect(page).to have_content("#{user.name}")
+        expect(page).to have_content("#{@user1.email}")
+        expect(page).to have_content("#{@user2.email}")
+        expect(page).to have_content("#{@user3.email}")
+        expect(page).to have_content("#{@user4.email}")
+        expect(page).to have_content("#{user.email}")
       end
     end
 
