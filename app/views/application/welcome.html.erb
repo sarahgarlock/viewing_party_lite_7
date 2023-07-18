@@ -1,7 +1,11 @@
 <h1>Viewing Party</h1>
 
-<%= button_to 'Create New User', '/register', method: :get %>
-<%= link_to 'Log In', login_path %>
+<% if current_user %>
+  <%= link_to "Log Out" %>
+<% else %>
+  <%= link_to 'Log In', login_path %>
+  <%= button_to 'Create New User', '/register', method: :get %>
+<% end %>
 
 
 <h2>Existing Users</h2>
