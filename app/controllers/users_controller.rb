@@ -1,13 +1,6 @@
 class UsersController < ApplicationController
-  # def index
-  #   binding.pry
-  # end
   def show
     @user = User.find(params[:id])
- 
-    # movie_id = @user.parties.first.movie_id
-    # @movie = SearchFacade.new(params[movie_id]).movies.first
-    # @party = @user.parties.first
   end
 
   def new
@@ -16,12 +9,13 @@ class UsersController < ApplicationController
 
   def create
     user = User.new(user_params)
+    user[:email] = user[:email].downcase
     if user.save
       redirect_to user_path(user)
       flash[:success] = "Welcome, #{user.name}"
     else
       redirect_to register_path
-      flash[:error] = "Email Address Must Be Unique"
+      flash[:error] = user.errors.full_messages.to_sentence
     end
   end
   
