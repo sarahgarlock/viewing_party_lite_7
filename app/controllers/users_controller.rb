@@ -18,6 +18,21 @@ class UsersController < ApplicationController
       flash[:error] = user.errors.full_messages.to_sentence
     end
   end
+
+  def login_form
+  end
+
+  def login
+    user = User.find_by(email: params[:email].downcase)
+  
+    if user
+      flash[:success] = "Welcome, #{user.name}"
+      redirect_to user_path(user)
+    else
+      flash[:error] = "Invalid email or password. Please try again."
+      redirect_to login_path
+    end
+  end
   
 
   private  

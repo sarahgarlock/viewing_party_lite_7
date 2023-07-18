@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   # root 'articles#index"
 
   root 'application#welcome'
+
+  get '/login', to: 'users#login_form', as: 'login'
+  post '/login', to: 'users#login'
   get '/register', to: 'users#new', as: 'register'
   post '/register', to: 'users#create'
 
