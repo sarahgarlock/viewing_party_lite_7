@@ -8,6 +8,7 @@ RSpec.describe '/', type: :feature do
     @user4 = User.create!(name: "John", email: "John@gmail.com", password_digest: 'password1')
     visit root_path
   end
+
   describe "User visits root path" do
     it "should display title of application" do
       expect(page).to have_content("Viewing Party")
@@ -17,17 +18,39 @@ RSpec.describe '/', type: :feature do
       expect(page).to have_button("Create New User")
     end
 
-    it "should display existing users with links to the users dashboard" do
+    it "should display existing users with links to the users dashboard if signed in" do
+      user = User.create!(name: "Ben Dover", 
+                          email: 'bendover@gmail.com',
+                          password: 'password')
+        
+      visit login_path
+      
+      fill_in :email, with: user.email
+      fill_in :password, with: user.password
+      
+      click_button "Log In"
+
+      visit root_path
+      
       within("#existing-users") do
         expect(page).to have_content("#{@user1.name}")
         expect(page).to have_content("#{@user2.name}")
         expect(page).to have_content("#{@user3.name}")
         expect(page).to have_content("#{@user4.name}")
+        expect(page).to have_content("#{user.name}")
       end
     end
 
     it "should have a nav home page link" do
       expect(page).to have_link("Home")
+    end
+  end 
+
+  describe 'visitor visits root path' do
+    it 'should not display existing users' do
+      expect(page).to_not have_content("Existing Users")
+      expect(page).to_not have_content("Sarah")
+      expect(page).to_not have_content("Jimmy")
     end
   end
 end
