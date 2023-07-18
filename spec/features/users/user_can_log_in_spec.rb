@@ -20,11 +20,21 @@ RSpec.describe "Logging In", type: :feature do
       expect(current_path).to eq(user_path(user))
     end
   end
+
+  context 'sad path' do
+    it 'cannot log in with invalid credentials' do
+      user = User.create!(name: "Ben Dover", email: 'bendover@gmail.com', password: 'password')
+
+      visit login_path
+
+      fill_in :email, with: user.email
+      fill_in :password, with: "wrongpassword"
+
+      click_button "Log In"
+
+      expect(page).to have_content("Invalid credentials. Please try again.")
+      expect(current_path).to eq(login_path)
+    end
+  end
 end
-# As a registered user
-# When I visit the landing page `/`
-# I see a link for "Log In"
-# When I click on "Log In"
-# I'm taken to a Log In page ('/login') where I can input my unique email and password.
-# When I enter my unique email and correct password 
-# I'm taken to my dashboard page
+
