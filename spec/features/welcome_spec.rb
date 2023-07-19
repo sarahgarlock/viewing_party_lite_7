@@ -7,6 +7,7 @@ RSpec.describe '/', type: :feature do
     @user3 = User.create!(name: "Alex", email: "Alex@gmail.com", password_digest: 'password1')
     @user4 = User.create!(name: "John", email: "John@gmail.com", password_digest: 'password1')
     visit root_path
+
   end
 
   describe "User visits root path" do
@@ -16,6 +17,27 @@ RSpec.describe '/', type: :feature do
 
     it "should display button to create a new user" do
       expect(page).to have_button("Create New User")
+    end
+
+    it 'should have a link to the users dashboard if signed in' do
+      user = User.create!(name: "Ben Dover", 
+                          email: 'bendover@gmail.com',
+                          password: 'password')
+
+      visit login_path
+
+      fill_in :email, with: user.email
+      fill_in :password, with: user.password
+
+      click_button "Log In"
+
+      visit root_path
+
+      expect(page).to have_link("Dashboard")
+
+      click_link "Dashboard"
+
+      expect(current_path).to eq(user_path(user))
     end
 
     it "should display existing users emails if signed in" do
@@ -51,6 +73,15 @@ RSpec.describe '/', type: :feature do
       expect(page).to_not have_content("Existing Users")
       expect(page).to_not have_content("Sarah")
       expect(page).to_not have_content("Jimmy")
+    end
+
+    it 'should not allow visitor to visit user dashboard' do
+      expect(page).to_not have_link("Dashboard")
+
+      visit '/users/1'
+
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content("You must be logged in or registered to access this page.")
     end
   end
 end

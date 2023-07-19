@@ -2,21 +2,28 @@ require 'rails_helper'
 
 RSpec.describe 'Users Show Page', type: :feature do
   before(:each) do
-    @user1 = User.create!(name: 'Sarah', email: 'Sarah@gmail.com', password_digest: 'password1')
-    @user2 = User.create!(name: 'Jimmy', email: 'Jimmy@gmail.com', password_digest: 'password1')
-
-    visit user_path(@user1)
+    @user = User.create!(name: "Ben Dover", email: 'bendover@gmail.com', password: 'password')
+  
+    visit root_path
+  
+    click_link "Log In"
+  
+    fill_in :email, with: @user.email
+    fill_in :password, with: @user.password
+    click_button "Log In"
   end
 
   describe 'As a visitor, when I visit a user show page' do
     it 'displays the user name at the top of the page' do
-      expect(page).to have_content("#{@user1.name}'s Dashboard")
-
-      expect(page).to_not have_content("#{@user2.name}'s Dashboard")
+      expect(page).to have_content("Welcome, #{@user.name}!")
+      expect(current_path).to eq(user_path(@user))
     end
 
     it 'displays a button to Discover Movies and redirects to that page' do
       expect(page).to have_button('Discover Movies')
+      click_button 'Discover Movies'
+
+      expect(current_path).to eq(discover_path(@user))
     end
 
     it 'displays a section that lists viewing parties' do
