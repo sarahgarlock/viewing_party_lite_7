@@ -46,4 +46,14 @@ RSpec.describe 'Movie Details Page', type: :feature do
       expect(page).to have_css('.review_content')
     end
   end
+  
+  describe 'as a visitor' do
+    it 'flashes a message when I try to create a viewing party', :vcr do
+      visit movie_show_path(@user1.id, @movie.id)
+      click_button('Create Viewing Party')
+
+      expect(current_path).to eq(movie_show_path(@user1.id, @movie.id))
+      expect(page).to have_content('You must be logged in to create a viewing party')
+    end
+  end
 end
