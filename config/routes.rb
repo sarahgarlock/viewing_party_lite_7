@@ -25,8 +25,6 @@ Rails.application.routes.draw do
 
   post '/users/:id/movies', to: 'movies#index', as: 'search'
 
-  # post '/search', to: 'search#search'
-
   resources :users, only: [:new, :create, :show] do
     
   end
