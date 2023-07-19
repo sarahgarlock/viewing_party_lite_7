@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   def show
-    @user = User.find(params[:id])
+    unless current_user
+      flash[:error] = "You must be logged in or registered to access this page."
+      redirect_to root_path
+    end
+    @user = current_user
   end
 
   def new
@@ -11,6 +15,7 @@ class UsersController < ApplicationController
     user = User.new(user_params)
     user[:email] = user[:email].downcase
     if user.save
+      session[:user_id] = user.id
       redirect_to user_path(user)
       flash[:success] = "Welcome, #{user.name}"
     else
@@ -24,7 +29,7 @@ class UsersController < ApplicationController
 
   def login
     user = User.find_by(email: params[:email].downcase)
-    if user.authenticate(params[:password])
+    if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       flash[:success] = "Welcome, #{user.name}!"
       redirect_to user_path(user)
