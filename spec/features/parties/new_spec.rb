@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'New Viewing Page', type: :feature do
   before(:each) do
-    @user1 = User.create!(name: 'Sarah', email: 'sarah@gmail.com', password_digest: 'password1')
+    @user1 = User.create!(name: 'Sarah', email: 'sarah@gmail.com', password: 'password1')
     @user2 = User.create!(name: 'James', email: 'James@gmail.com', password_digest: 'password1')
     @user3 = User.create!(name: 'Jimi', email: 'Jimi@gmail.com', password_digest: 'password1')
 
@@ -12,6 +12,16 @@ RSpec.describe 'New Viewing Page', type: :feature do
   end  
   describe "new viewing party form page" do
     it "displays form fields", :vcr do
+      visit root_path
+    
+      click_link "Log In"
+    
+      fill_in :email, with: @user1.email
+      fill_in :password, with: @user1.password
+      click_button "Log In"
+
+      visit new_viewing_party_path(@user1, @movie.id)
+
       expect(current_path).to eq(new_viewing_party_path(@user1, @movie.id))
 
       expect(page).to have_content("#{@movie.title}")
