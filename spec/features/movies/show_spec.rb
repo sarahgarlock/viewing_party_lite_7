@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Movie Details Page', type: :feature do
   before(:each) do
-    @user1 = User.create!(name: 'Sarah', email: 'sarah@gmail.com', password_digest: 'password1')
+    @user1 = User.create!(name: 'Sarah', email: 'sarah@gmail.com', password: 'password1')
     movies = SearchFacade.new.movies
     @movie = movies.first
     @reviews = MovieFacade.new(@movie.id).get_reviews
@@ -22,6 +22,15 @@ RSpec.describe 'Movie Details Page', type: :feature do
     end
 
     it 'Create Viewing Party button takes user to create page', :vcr do
+      visit root_path
+    
+      click_link "Log In"
+    
+      fill_in :email, with: @user1.email
+      fill_in :password, with: @user1.password
+      click_button "Log In"
+      
+      visit movie_show_path(@user1.id, @movie.id)
       click_button('Create Viewing Party')
 
       expect(current_path).to eq(new_viewing_party_path(@user1, @movie.id))
@@ -49,6 +58,7 @@ RSpec.describe 'Movie Details Page', type: :feature do
   
   describe 'as a visitor' do
     it 'flashes a message when I try to create a viewing party', :vcr do
+
       visit movie_show_path(@user1.id, @movie.id)
       click_button('Create Viewing Party')
 
